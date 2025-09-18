@@ -1,93 +1,69 @@
-import { useState } from 'react'
 
-//cree un componente Button que devuelve un boton con el nombre que se le pase y la funcion que se le pase por props
-const Button=(props)=>{
+import { useState } from "react";
 
-return(
- <button onClick={props.onClick}>{props.name}</button>  
-)
+/////////////////////
+const Header=({name})=>{
 
 
-}
 
-const StatisticLine =(props)=>{
-
-return(
-
-      <>   
-    <td>{props.name}</td><td>{props.estadistic}</td> 
-      </>
-)
-
-}
-
-//cree u componente Result que devuelve el tipo de comentario y la cantidad de comentarios que han hecho
-const Statistics=(props)=>{
-
-if (props.good || props.bad || props.neutral) {
   return(
-  <div>
-
- <h3>Statistics</h3>
-     <br/>
-    <table>
-
-    <tr><StatisticLine name={'good'} estadistic={props.good}/></tr> 
-    <tr><StatisticLine  name={'neutral'} estadistic={props.neutral} /></tr>
-    <tr><StatisticLine  name={'bad'} estadistic={props.bad} /></tr> 
-   
-<tr><td>all</td><td>{props.good+props.neutral+props.bad}</td></tr>
-
-<tr><td>average</td><td>{(props.good*1+props.neutral*0+props.bad*(-1))/props.good+props.neutral+props.bad}</td></tr>
-
-
-    </table>
-
- 
-  </div>
-
-)
-}else{
-return(
 <div>
 
-<h2> No feedback given </h2>
-
+<h1>{name}</h1>
 </div>
-)
+
+  )
 }
+///////////////////////
+const Content=(content)=>{
 
 
 
-}
+const partes=content.content
 
-const App = () => {
-  // guarda los clics de cada botón en su propio estado
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
+const total= partes.reduce((acumulador,part)=>acumulador + part.exercises,0)
 
-  //cree una funcion contador  para cada estado 
 
- 
-  
-  return (
+  return(
+
     <div>
-     
+<Header name={content.name} />
 
-  <h1>give feedback</h1>
-     <br />
-    {/* le paso al componente button la funcion contador de cada estado y su nombre para que el componente buton la ejecute  */}
-<Button onClick={ () => setGood(good + 1)} good={good} name='good'/>
-<Button onClick={ () => setNeutral(neutral + 1)} neutral={neutral}  name='neutral'/>
-<Button onClick={ () => setBad(bad + 1) } bad={bad} name='bad'/>
-     <br />
-    <Statistics good={good} bad={bad} neutral={neutral}/>
-   
-  
-   
+{partes.map(part=><Part key={part.id} name={part.name} exercises={part.exercises}/>)} 
+
+<h3>total of {total} exercises</h3>
+
+<br />
+
     </div>
   )
 }
+/////////////////////
+const Part=(props)=>{
 
-export default App
+
+  return(
+
+<div>
+<p>{props.name}  {props.exercises}</p>
+
+</div>
+
+  )
+}
+///////////////////
+const Course = ({ course }) => {
+
+  console.log(course)
+ return(
+<div>
+
+{course.map(curs=><Content content={curs.parts}/>)}
+
+
+</div>
+  )
+curs
+}
+
+ 
